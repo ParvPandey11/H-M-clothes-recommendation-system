@@ -1,0 +1,7 @@
+{
+ "scores": {
+  "Best-sellers (baseline)": 0.007762992779442605,
+  "Repurchase + popular": 0.023982514143667172,
+  "LightGBM LambdaRank": 0.026297840027578765
+ }
+}
