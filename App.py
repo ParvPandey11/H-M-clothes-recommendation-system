@@ -38,14 +38,16 @@ def grid(items, ncols=4):
 st.title("👗 Fashion Recommender (LightGBM LambdaRank)")
 
 with_recs = sorted(recs.customer_id.unique())
-cold = sorted(set(tx.customer_id) - set(with_recs))[:20]
-all_customers = with_recs + cold
+cold_list = sorted(set(tx.customer_id) - set(with_recs))[:20]
+all_customers = with_recs + cold_list
+
 with st.sidebar:
     st.header("Pick a customer")
     cid = st.selectbox(
         "Customer", all_customers,
-        format_func=lambda c: f"{c} (cold start)" if c in cold else str(c),
-    )    k = st.slider("How many recommendations", 4, 12, 12, step=4)
+        format_func=lambda c: f"{c} (cold start)" if c in cold_list else str(c),
+    )
+    k = st.slider("How many recommendations", 4, 12, 12, step=4)
     rpath = os.path.join(DATA_DIR, "results.json")
     if os.path.exists(rpath):
         st.header("Model comparison (MAP@12)")
@@ -60,8 +62,7 @@ else:
     st.info("No purchase history for this customer.")
 
 st.subheader("Recommended for you")
-items, cold = recs_for(cid, recs, tx, k)
-if cold:
+items, is_cold = recs_for(cid, recs, tx, k)
+if is_cold:
     st.warning("Cold start: no model recommendations, showing this week's best-sellers.")
 grid(items, ncols=4)
-    
