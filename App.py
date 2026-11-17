@@ -3,7 +3,7 @@ import streamlit as st
 from demo_utils import load_data, recs_for, history_for, image_path
 
 BASE = os.path.dirname(os.path.abspath(__file__))
-DATA_DIR = os.path.join(BASE, "demo_data")
+DATA_DIR = os.path.join(BASE, "demo data")
 IMG_DIR = os.path.join(BASE, "images")
 
 st.set_page_config(page_title="Fashion Recommender", layout="wide")
