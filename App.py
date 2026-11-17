@@ -37,11 +37,15 @@ def grid(items, ncols=4):
 
 st.title("👗 Fashion Recommender (LightGBM LambdaRank)")
 
-all_customers = sorted(set(tx.customer_id) | set(recs.customer_id))
+with_recs = sorted(recs.customer_id.unique())
+cold = sorted(set(tx.customer_id) - set(with_recs))[:20]
+all_customers = with_recs + cold
 with st.sidebar:
     st.header("Pick a customer")
-    cid = st.selectbox("Customer", all_customers)
-    k = st.slider("How many recommendations", 4, 12, 12, step=4)
+    cid = st.selectbox(
+        "Customer", all_customers,
+        format_func=lambda c: f"{c} (cold start)" if c in cold else str(c),
+    )    k = st.slider("How many recommendations", 4, 12, 12, step=4)
     rpath = os.path.join(DATA_DIR, "results.json")
     if os.path.exists(rpath):
         st.header("Model comparison (MAP@12)")
